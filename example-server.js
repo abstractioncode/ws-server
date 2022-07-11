@@ -21,10 +21,10 @@ wss.on('connection', function(ws) {
     })));
 
     ws.on('message', function(data, flags) {
-      console.log(data)
-      //const msg = JSON.parse(decrypt(data));
+      //console.log(data)
+      const msg = JSON.parse(decrypt(data));
        // console.log(msg)
-     //   getcommand(msg,ws);
+          getcommand(msg,ws);
         //ws.send("123");
     });
     ws.on('close', function() {
