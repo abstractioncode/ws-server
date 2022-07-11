@@ -8,7 +8,7 @@ var wss = new WebSocketServer({server: server, path: '/foo',
 });
 const {getcommand} = require('./commandhandler.js');
 const {setup} = require('./modules/database.setup.js');
-//setup();
+setup();
 const {decrypt, encrypt} = require('./commands/encryptest.js');
   let success = false;
 
