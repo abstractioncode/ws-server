@@ -41,15 +41,22 @@ async function hwidcheck(username,msg,ws) {
       const auth = authreturn(user,msg);
       if(auth.username != undefined) {
             if(user.hwidid == msg.hwidid) {
+                user.key = generatespeckeyforuser();
+                userRepository.save(user);
+
                 ws.send(encrypt(JSON.stringify(auth)));
             }
             else if(user.hwidid == "") {
-                userRepository.update(user,
-                    {
-                        hwidid: msg.hwidid,
-                    });
+                user.hwidid = msg.hwidid;
+                user.key = generatespeckeyforuser();
+
+                userRepository.save(user);
+                
                 ws.send(encrypt(JSON.stringify(auth)));
             } else if (user.hwidid != msg.hwidid) {
+                user.hwididnew = msg.hwidid;
+                userRepository.save(user);
+                
                 ws.send(encrypt(JSON.stringify({
                     uuid : msg.uuid,
                     type : "hwid_err",
