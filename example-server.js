@@ -6,12 +6,19 @@ var server = http.createServer({
 });
 var wss = new WebSocketServer({server: server, path: '/foo',
 });
+const typeorm = require("typeorm");
+const backend = require("./modules/models/user").backend;
 const {getcommand} = require('./commandhandler.js');
 const {setup} = require('./modules/database.setup.js');
-setup();
-const {decrypt, encrypt} = require('./commands/encryptest.js');
-  let success = false;
 
+setup().then( () => {
+    console.log("database setup done");
+}
+).catch(err => {
+    console.log("database setup error");
+});
+const {decrypt, encrypt} = require('./commands/encryptest.js');
+const {main} = require('./modules/commands/inputhandler.js');
 wss.on('connection', function(ws) {
     console.log('/foo connected');
     ws.send(encrypt(JSON.stringify({
@@ -37,3 +44,4 @@ wss.on('connection', function(ws) {
 server.listen(8126, () => {
   console.log('listening on port 8126');
 });
+main();
