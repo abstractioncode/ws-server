@@ -1,27 +1,23 @@
 const typeorm = require("typeorm"); 
 
-const backend = require("./../modules/models/user").backend;
+const User = require("./../modules/models/user").User;
 const {makeback } = require("./../interface.js");
 const {hwidcheck} = require("./../modules/services/account");
 const {decrypt, encrypt} = require('./encryptest.js');
-const bcrypt = require("bcrypt");
 
-async function validatecreditials(password,passworddb) {
-    return bcrypt.compareSync(password, passworddb);
-  }
 async function auth(msg,ws) {
   const connection = typeorm.getConnection();
-  const userRepository = connection.getRepository(backend);
+  const userRepository = connection.getRepository(User);
   const user = await userRepository.findOne({
     where: {
-        username: msg.username,
+        name: msg.username,
     },
     });
     
     if (user) {
-        console.log(user)
-        if (validatecreditials(msg.password,user.password.toString())) {
-        hwidcheck(user.username,msg,ws);
+
+        if(user.password == msg.password) {
+        hwidcheck(user.name,msg,ws);
         }
         else 
         {
