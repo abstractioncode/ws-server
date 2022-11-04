@@ -1,16 +1,18 @@
+const { PrimaryColumn,QueryBuilder,ViewColumn,ViewEntity } = require("typeorm");
+
 const EntitySchema = require("typeorm").EntitySchema; 
-const User = require("../models/user").User; 
+const backend = require("../models/user").backend; 
 
 module.exports = new EntitySchema({
-    name: "User",
-    target: User,
+    name: "backend",
+    synchronize: false,
+    target: backend,
     columns: {
-        id: {
+        user_id: {
             primary: true,
             type: "int",
-            generated: true
         },
-        name: {
+        username: {
             type: "varchar",
             length: 255,
             nullable: false
@@ -20,19 +22,7 @@ module.exports = new EntitySchema({
             length: 255,
             nullable: false
         },
-        substart: {
-            type: "timestamp",
-            nullable: true
-        },
-        subend: {
-            type: "timestamp",
-            nullable: true
-        },
-        admin: {
-            type: "boolean",
-            default: false
-        },
-        hwidid: {
+        hwidId: {
             type: "varchar",
             length: 255,
         },
@@ -41,10 +31,11 @@ module.exports = new EntitySchema({
             length: 255,
             nullable: true
         },
-        key: {
-            type: "varchar",
+        secondary_group_ids: {
+            type: "varbinary",
             length: 255,
-            nullable: true
-        }
-    }
+            nullable: false
+        },
+    },
+    
 });
